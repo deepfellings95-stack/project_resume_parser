@@ -2,6 +2,6 @@ services:
   - type: web
     name: resume_parser
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    buildCommand: "cd project_resume_parser && pip install -r requirements.txt"
+    startCommand: "cd project_resume_parser && gunicorn app:app"
     pythonVersion: "3.10.14"
