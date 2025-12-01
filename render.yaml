@@ -1,7 +1,10 @@
 services:
   - type: web
-    name: resume_parser
+    name: resume-parser
     env: python
-    pythonVersion: 3.10.14
-    buildCommand: "pip install -r requirements.txt"
+    plan: free
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
     startCommand: "gunicorn app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.10.14"
