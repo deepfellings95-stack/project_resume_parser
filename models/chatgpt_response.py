@@ -4,6 +4,10 @@ from openai import OpenAI
 
 load_dotenv()
 
+# Set environment variables for OpenRouter
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENRouter_CHATGPT_KEY")
+os.environ["OPENAI_API_BASE"] = "https://openrouter.ai/api/v1"
+
 class chatGPTResponse:
     def __init__(self, text):
         self.text = text
@@ -22,44 +26,16 @@ Resume:
 \"\"\"{self.text}\"\"\"
 IMPORTANT:
 - Return ONLY valid JSON.
-- Do NOT wrap the JSON in ```json``` or any code fences.
 - No explanation, no text before or after.
 """
 
     def get_response(self):
         try:
-            key = os.getenv('OPENRouter_CHATGPT_KEY')
-            if not key:
-                return "no key"
-            
-            client = OpenAI(
-            base_url="https://openrouter.ai/api/v1",
-            api_key=key,
-            default_headers={
-                "HTTP-Referer": "https://your-render-app.onrender.com",
-                "X-Title": "Resume Parser API"
-                }
-            )
-            
+            client = OpenAI()  # no args needed
             response = client.chat.completions.create(
-                model= "openai/gpt-oss-20b:free",
-                messages = [{
-                    'role': 'user',
-                    "content": self.prompt
-                    }
-                            ]
-                )
-            return response.choices[0].message.content
+                model="openai/gpt-oss-20b:free",
+                messages=[{"role": "user", "content": self.prompt}]
+            )
+            return response
         except Exception as e:
-            return f" error {e}" 
-            
-
-
-
-
-
-
-
-
-
-                    
+            return f" error {e}"
