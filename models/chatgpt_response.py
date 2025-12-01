@@ -1,6 +1,7 @@
 import os
+import json
+import requests
 from dotenv import load_dotenv
-from openai import OpenAI
 
 load_dotenv()
 
@@ -28,26 +29,35 @@ IMPORTANT:
 
     def get_response(self):
         try:
-            key = os.getenv('OPENRouter_CHATGPT_KEY')
+            key = os.getenv("OPENRouter_CHATGPT_KEY")
             if not key:
-                return "no key"
-            
-            client = OpenAI(
-                base_url="https://openrouter.ai/api/v1",
-                api_key = key)
-            
-            response = client.chat.completions.create(
-                model= "openai/gpt-oss-20b:free",
-                messages = [{
-                    'role': 'user',
-                    "content": self.prompt
-                    }
-                            ]
-                )
-            return response
+                return {"error": "NO_OPENROUTER_KEY"}
+
+            url = "https://openrouter.ai/api/v1/chat/completions"
+
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {key}",
+            }
+
+            payload = {
+                "model": "openai/gpt-oss-20b:free",
+                "messages": [
+                    {"role": "user", "content": self.prompt}
+                ]
+            }
+
+            response = requests.post(url, headers=headers, json=payload)
+            data = response.json()
+
+            # Extract the assistant content only
+            final_output = data["choices"][0]["message"]["content"]
+
+            return final_output
+
         except Exception as e:
-            return f" error {e}" 
-            
+            return {"error": str(e)}
+
 
 
 
