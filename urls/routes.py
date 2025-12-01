@@ -81,7 +81,7 @@ def parsing_image(filename):
 
     gpt = chatGPTResponse(parsed_text)
     parsed_text = gpt.get_response()
-    saving_file = Save(filename, all_text, user_id = current_user.id)
+    saving_file = Save(filename, parsed_text, user_id = current_user.id)
     result_of_saving = saving_file.save_text()
 
     return render_template('result.html', text= parsed_text, filename = filename)
