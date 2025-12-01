@@ -44,6 +44,9 @@ IMPORTANT:
 
         try:
             res = requests.post(url, headers=headers, json=data, timeout=60)
-            return res
+            res_json = res.json()
+
+        # Return ONLY the actual JSON output
+        return res_json["choices"][0]["message"]["content"]
         except Exception as e:
             return {"error": str(e)}
