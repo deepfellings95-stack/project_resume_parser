@@ -29,8 +29,8 @@ def parsing_pdf(filename):
         if len(all_text) < 100:
             return redirect(url_for('urls.parsing_image', filename = filename))
 
-        gpt = call_render(all_text)
-        all_text = call_render(all_text)
+        gpt = chatGPTResponse(all_text)
+        all_text = gpt.get_response()
 
         saving_file = Save(filename, all_text, user_id = current_user.id)
         result_of_saving = saving_file.save_text()
