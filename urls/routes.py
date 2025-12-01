@@ -29,8 +29,8 @@ def parsing_pdf(filename):
         if len(all_text) < 100:
             return redirect(url_for('urls.parsing_image', filename = filename))
 
-        #gpt = call_render(all_text)
-        #all_text = call_render(all_text)
+        gpt = call_render(all_text)
+        all_text = call_render(all_text)
 
         saving_file = Save(filename, all_text, user_id = current_user.id)
         result_of_saving = saving_file.save_text()
@@ -51,8 +51,8 @@ def parsing_documnets(filename):
         all_text = para_text.extract_all_text()
         if len(all_text) < 100:
             return redirect(url_for('urls.parsing_image', filename = filename))
-        #gpt = chatGPTResponse(all_text)
-        #all_text = gpt.get_response()
+        gpt = chatGPTResponse(all_text)
+        all_text = gpt.get_response()
         
         return render_template('result.html', text= all_text, filename = filename)
     except Exception as e:
@@ -77,8 +77,8 @@ def parsing_image(filename):
     else:
         parsed_text = ''
 
-    #gpt = chatGPTResponse(parsed_text)
-    #parsed_text = gpt.get_response()
+    gpt = chatGPTResponse(parsed_text)
+    parsed_text = gpt.get_response()
         
     return render_template('result.html', text= parsed_text, filename = filename)
 
@@ -90,8 +90,8 @@ def parsing_text(filename):
     text_file_txt = textParser(full_filepath)
     all_text = text_file_txt.extract_all_text()
 
-    #gpt = chatGPTResponse(all_text)
-    #all_text = gpt.get_response()
+    gpt = chatGPTResponse(all_text)
+    all_text = gpt.get_response()
                         
     return render_template('result.html', text= all_text, filename = filename)
 
